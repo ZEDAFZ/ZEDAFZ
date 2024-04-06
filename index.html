@@ -162,7 +162,7 @@
             min-width: 80px;
             /* Adjust the width of each button */
             flex: 0 0 auto;
-            /* Ensure buttons don't grow beyond their content */
+            
         }
 
 
@@ -170,13 +170,51 @@
 
 
 
-        /* Show the navigation bar only on small screens */
+       
         @media screen and (min-width: 640px) {
+            
 
             .btm-nav {
                 display: none;
             }
         }
+        @media screen and (max-width: 1000px){
+            .text{
+                font-size: 60px;
+            }
+            .slider-wrapper {
+        max-width: 600px;
+        margin: auto;
+    }
+    
+
+    .slideshow-container {
+        max-width: 600px;
+        margin: auto;
+        margin-top: 30px;
+    }
+
+        }
+        @media screen and (max-width: 500px){
+            .slider-wrapper {
+        max-width: 500px; 
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .slideshow-container {
+        max-width: 400px;
+        margin: auto;
+        margin-top: 20px;
+        
+    }
+            .text{
+                font-size: 50px;
+            }
+
+        }
+            
+        
     </style>
 </head>
 
@@ -299,19 +337,19 @@
         <!-- Full-width images with number and caption text -->
         <div class="mySlides fade">
             <div class="numbertext"></div>
-            <img src="zed.png" style="width:100%; opacity: 0.5;">
+            <img src="zed.png" style="width:100%; opacity: 0.75;">
             <div class="text" style="font-family: 'Noto Sans', sans-serif;">ZEDAFZ</div>
         </div>
 
         <div class="mySlides fade">
             <div class="numbertext"></div>
-            <img src="zed2.png" style="width:100%; opacity: 0.5;">
+            <img src="zed2.png" style="width:100%; opacity: 0.75;">
             <div class="text">ZEDAFZ</div>
         </div>
 
         <div class="mySlides fade">
             <div class="numbertext"></div>
-            <img src="zed3.png" style="width:100%; opacity: 0.5;">
+            <img src="zed3.png" style="width:100%; opacity: 0.75;">
             <div class="text">ZEDAFZ</div>
         </div>
 
