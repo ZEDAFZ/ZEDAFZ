@@ -433,38 +433,40 @@
 
 
     <script>
- let slideIndex = 0;
-let slideInterval; // Variable to hold the interval
+let slideIndex = 0;
+let slideInterval;
 
-// Call the function to start slideshow
+// Start slideshow
 showSlides();
 
 // Function to show slides
 function showSlides() {
     let i;
     let slides = document.getElementsByClassName("mySlides");
-    
+
     // Hide all slides
     for (i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }
-    
+
     // Increment slideIndex
     slideIndex++;
-    
+
     // Reset slideIndex if it exceeds the total number of slides
     if (slideIndex > slides.length) {
         slideIndex = 1;
     }
-    
+
     // Display the current slide
     slides[slideIndex - 1].style.display = "block";
-    
-    // Automatically move to the next slide every 2 seconds
-    slideInterval = setTimeout(showSlides, 6000);
+
+    // Automatically move to the next slide every 5 seconds
+    slideInterval = setTimeout(function () {
+        plusSlides(1);
+    }, 5000);
 }
 
-// Function to move to the next slide manually
+// Function to move to the next or previous slide manually
 function plusSlides(n) {
     clearTimeout(slideInterval); // Clear the automatic slideshow interval
     showSlides(slideIndex += n);
@@ -479,7 +481,12 @@ function currentSlide(n) {
 // Restart the automatic slideshow after manual navigation
 document.querySelectorAll('.prev, .next, .dot').forEach(item => {
     item.addEventListener('click', () => {
-        slideInterval = setTimeout(showSlides, 6000);
+        // Only set the interval if it's not already set
+        if (!slideInterval) {
+            slideInterval = setTimeout(function () {
+                plusSlides(1);
+            }, 5000);
+        }
     });
 });
 
