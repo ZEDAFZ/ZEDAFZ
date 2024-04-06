@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zedafz</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+       
+    /* CSS for the modal */
+    #photoModal {
+        z-index: 9999;
+    }
+
+    #photoModal img {
+        max-width: 100%;
+        max-height: 80vh;
+    }
+
+
+        /* Custom styles */
+    .upload-container {
+        display: inline-block;
+        position: relative;
+    }
+
+    .upload-container input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+        /* Custom styles */
+        .custom-nav-bg {
+            background-color: #1F2937;
+        }
+
+        .custom-footer-bg {
+            background-color: #1F2937;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .image {
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .image:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100">
+
+    <!-- Navigation -->
+    <header class="bg-gray-800 text-white p-4 custom-nav-bg">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and Brand Name -->
+            <div class="flex items-center">
+                <img src="logo.webp" alt="Zedafz Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold">Zedafz</span>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="/" class="hover:text-blue-500">Home</a>
+                <a href="#" class="hover:text-blue-500">About</a>
+                <a href="chat.html" class="hover:text-blue-500">Chat</a>
+                <a href="gallery.html" class="hover:text-blue-500">Gallery</a>
+                <a href="#" class="hover:text-blue-500">Tournaments</a>
+                <a href="#" class="hover:text-blue-500">Leaderboard</a>
+                <a href="#" class="hover:text-blue-500">Events</a>
+            </nav>
+
+            <!-- User Profile and Icons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <img src="user.png" alt="User Profile" class="h-8 w-8 rounded-full">
+                <span>Username</span>
+                <button><i class="fas fa-bell"></i></button>
+                <button><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content - Gallery -->
+    <section class="container mx-auto mt-8">
+        <h2 class="text-2xl font-bold mb-4" style="text-align: center; font-weight: bold; font-size: 40PX;">GALLERY</h2>
+
+        <div class="gallery">
+            <div class="image">
+                <img src="zed.png" alt="Image 1">
+            </div>
+            <div class="image">
+                <img src="zed2.png" alt="Image 2">
+            </div>
+            <div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div>
+            <div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div>
+            <div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div>
+            <div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div>
+            <div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div><div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div><div class="image">
+                <img src="zed3.png" alt="Image 3">
+            </div>
+            <!-- Add more images as needed -->
+        </div>
+        <div id="photoModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+            <div class="max-w-lg bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+                <button id="closeModal" class="absolute top-0 right-0 m-4 text-white hover:text-red-500"><i class="fas fa-times"></i></button>
+                <img id="modalImage" class="w-full" src="" alt="Modal Photo">
+            </div>
+            </div>
+        
+            
+        
+            <!-- Photo Upload -->
+            <h2 class="text-2xl font-bold mb-4">Upload Photos</h2>
+
+    <!-- Photo Upload -->
+    <div class="mb-6">
+        <label for="photoUpload" class="block text-lg font-semibold mb-2">Choose an image to upload</label>
+        <div class="relative upload-container">
+            <input type="file" id="photoUpload" accept="image/*" class="hidden">
+            <label for="photoUpload" class="cursor-pointer bg-gray-200 text-gray-700 py-2 px-4 rounded-md inline-block hover:bg-gray-300 transition duration-300 ease-in-out">Choose File</label>
+            <span id="fileName" class="ml-2"></span>
+        </div>
+    </div>
+
+    <!-- Upload Button -->
+    <button id="uploadButton" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-md shadow-md transition duration-300 ease-in-out">Upload</button>
+       
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-6 mt-6 custom-footer-bg">
+        <div class="flex items-center justify-center">
+            <p class="text-white text-sm">&copy; 2024 Zedafz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to handle photo upload
+    $('#photoUpload').change(function() {
+        const file = $(this)[0].files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageUrl = e.target.result;
+                const photoCard = `
+                    <div class="image">
+                        <img src="${imageUrl}" alt="Uploaded Image">
+                    </div>
+                `;
+                $('.gallery').append(photoCard);
+            };
+            reader.readAsDataURL(file);
+            $('#fileName').text(file.name);
+        }
+    });
+
+    // Event listener for upload button
+    $('#uploadButton').click(function() {
+        // Add your code to handle upload button click
+        console.log('Upload button clicked');
+        // You can trigger photo upload function here
+        $('#photoUpload').click();
+    });
+        // Your JavaScript code here
+        // Function to open photo modal
+    function openPhotoModal(imageUrl) {
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageUrl;
+        document.getElementById('photoModal').classList.remove('hidden');
+    }
+
+    // Function to close modal
+    function closeModal() {
+        document.getElementById('photoModal').classList.add('hidden');
+    }
+
+    // Event listener for clicking on an image
+    $('.image').click(function() {
+        const imageUrl = $(this).find('img').attr('src');
+        openPhotoModal(imageUrl);
+    });
+
+    // Event listener for closing the modal
+    $('#closeModal').click(function() {
+        closeModal();
+    });
+       // Function to open photo modal
+       function openPhotoModal(imageUrl) {
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageUrl;
+        document.getElementById('photoModal').classList.remove('hidden');
+    }
+
+    // Function to close modal
+    function closeModal() {
+        document.getElementById('photoModal').classList.add('hidden');
+    }
+
+    // Event listener for clicking on an image
+    $('.image').click(function() {
+        const imageUrl = $(this).find('img').attr('src');
+        openPhotoModal(imageUrl);
+    });
+
+    // Event listener for closing the modal when clicking the overlay
+    $('#photoModal').click(function(event) {
+        if (event.target === this) {
+            closeModal();
+        }
+    });
+
+    // Event listener for closing the modal when clicking the close button
+    $('#closeModal').click(function() {
+        closeModal();
+    });
+    </script>
+</body>
+
+</html>

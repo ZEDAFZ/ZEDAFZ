@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zedafz - Tournaments</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Bottom navigation bar styling */
+        .bottom-nav {
+            display: flex;
+            overflow-x: scroll;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1F2937;
+            /* This hex color matches Tailwind's bg-gray-800 */
+            z-index: 10;
+            white-space: nowrap;
+            padding: 10px 50px;
+            scroll-behavior: smooth;
+        }
+
+        .bottom-nav::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for iOS and Chrome */
+        }
+
+        .bottom-nav a {
+            flex: none;
+            display: inline-block;
+            text-align: center;
+            padding: 16px;
+            /* Increased padding */
+            text-decoration: none;
+            color: white;
+        }
+
+        .bottom-nav i {
+            font-size: 24px;
+            /* Larger icon size */
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            bottom: 0;
+            transform: translateY(-50%);
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            border-radius: 50%;
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        /* Show the navigation bar only on small screens */
+        @media screen and (min-width: 640px) {
+
+            .bottom-nav,
+            .arrow {
+                display: none;
+            }
+        }
+
+        .match {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 2px solid #4A5568;
+            /* Darker border color */
+        }
+
+        .team {
+            padding: 10px;
+            background-color: #E5E7EB;
+            /* Lighter background color */
+            border-radius: 6px;
+            color: #1F2937;
+            /* Darker text color */
+            font-weight: bold;
+        }
+
+        .vs {
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .schedule-item {
+            background-color: #1d232a;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .schedule-item:hover {
+            background-color: #3b4857;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100">
+
+    <!-- Header -->
+    <header class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and Brand Name -->
+            <div class="flex items-center">
+                <img src="logo.webp" alt="Zedafz Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold">Zedafz</span>
+            </div>
+
+
+
+            <!-- Navigation Menu -->
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="/" class="hover:text-blue-500">Home</a>
+                <a href="about.html" class="hover:text-blue-500">About</a>
+                <a href="chat.html" class="hover:text-blue-500">Chat</a>
+                <a href="gallery.html" class="hover:text-blue-500">Gallery</a>
+                <a href="tournaments.html" class="hover:text-blue-500">Tournaments</a>
+                <a href="#" class="hover:text-blue-500">Leaderboard</a>
+                <a href="#" class="hover:text-blue-500">Events</a>
+            </nav>
+
+            <!-- User Profile and Icons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <img src="user.png" alt="User Profile" class="h-8 w-8 rounded-full">
+                <span>Username</span>
+                <button><i class="fas fa-bell"></i></button>
+                <button><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </header>
+
+
+
+
+    <!-- Tournament Listings Section -->
+    <section class="container mx-auto mt-8 px-4">
+        <h2 class="text-3xl font-bold mb-4">Tournament Listings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Tournament 1 -->
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-white mb-2">Free Fire Tournament</h3>
+                <p class="text-gray-300 mb-2">Slots Left: 10</p>
+                <p class="text-gray-300 mb-4">Status: Registration Open</p>
+                <button
+                    onclick="openModal('Free Fire Tournament', '15th October 2024', '18:00', 'Squad', '₹1000', '₹10', '3', '5')"
+                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md transition duration-300 ease-in-out focus:outline-none focus:bg-blue-600">View
+                    Details</button>
+            </div>
+            <!-- Tournament 2 -->
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-white mb-2">eFootball Tournament</h3>
+                <p class="text-gray-300 mb-2">Slots Left: 5</p>
+                <p class="text-gray-300 mb-4">Status: Registration Open</p>
+                <button
+                    onclick="openModal('eFootball Tournament', '20th October 2024', '19:30', 'Solo', '₹500', '₹5', '2', '4')"
+                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md transition duration-300 ease-in-out focus:outline-none focus:bg-blue-600">View
+                    Details</button>
+            </div>
+            <!-- Tournament 3 -->
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-white mb-2">Slots Tournament</h3>
+                <p class="text-gray-300 mb-2">Slots Left: 8</p>
+                <p class="text-gray-300 mb-4">Status: Registration Closed</p>
+                <button
+                    class="px-4 py-2 bg-gray-600 text-white font-semibold rounded-md transition duration-300 ease-in-out cursor-not-allowed"
+                    disabled>Registration Closed</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tournament Details Modal -->
+    <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-gray-800 rounded-lg p-8 md:p-4 w-full md:max-w-md overflow-y-auto max-h-full">
+            <h2 id="modal-title" class="text-2xl font-bold text-white mb-4"></h2>
+            <p id="modal-date" class="text-gray-300 mb-2"></p>
+            <p id="modal-time" class="text-gray-300 mb-2"></p>
+            <p id="modal-team" class="text-gray-300 mb-2"></p>
+            <p id="modal-prize" class="text-gray-300 mb-2"></p>
+            <p id="modal-fee" class="text-gray-300 mb-2"></p>
+            <p id="modal-rounds" class="text-gray-300 mb-2"></p>
+            <form action="#" class="mb-4">
+                <label for="game-name" class="text-gray-300 block">Game Name:</label>
+                <input type="text" id="game-name"
+                    class="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring focus:ring-blue-500 mb-2"
+                    required>
+                <label for="team-name" class="text-gray-300 block">Team Name:</label>
+                <input type="text" id="team-name"
+                    class="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring focus:ring-blue-500 mb-2"
+                    required>
+                <label for="captain-name" class="text-gray-300 block">Captain's Name:</label>
+                <input type="text" id="captain-name"
+                    class="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring focus:ring-blue-500 mb-4"
+                    required>
+                <!-- Inputs for UID based on team size -->
+                <div id="uid-inputs"></div>
+                <button type="submit"
+                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md transition duration-300 ease-in-out focus:outline-none focus:bg-blue-600">Register</button>
+            </form>
+            <button onclick="closeModal()"
+                class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-md transition duration-300 ease-in-out focus:outline-none focus:bg-gray-700">Close</button>
+        </div>
+    </div>
+
+    <div id="tournament-bracket" class="max-w-4xl mx-auto my-auto">
+        <h2 class="text-3xl text-center font-bold mb-4">Tournament Bracket</h2>
+
+        <!-- Round 1 -->
+        <div class="round">
+            <div class="match">
+                <div class="team bg-blue-500 text-white">Team A</div>
+                <div class="vs text-gray-600">vs</div>
+                <div class="team bg-red-500 text-white">Team B</div>
+            </div>
+            <div class="match">
+                <div class="team bg-green-500 text-white">Team C</div>
+                <div class="vs text-gray-600">vs</div>
+                <div class="team bg-yellow-500 text-white">Team D</div>
+            </div>
+        </div>
+    
+        <!-- Round 2 -->
+        <div class="round">
+            <div class="match">
+                <div class="team bg-blue-500 text-white">Winner of Match 1</div>
+                <div class="vs text-gray-600">vs</div>
+                <div class="team bg-green-500 text-white">Winner of Match 2</div>
+            </div>
+        </div>
+    
+        <!-- Final -->
+        <div class="round">
+            <div class="match">
+                <div class="team bg-blue-500 text-white">Winner of Round 2</div>
+                <div class="vs text-gray-600">vs</div>
+                <div class="team bg-red-500 text-white">Runner-up of Round 2</div>
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- Schedule -->
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-4">E-sports Tournament Schedule</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Schedule Items -->
+            <div class="schedule-item">
+                <h2 class="text-lg font-bold">Match 1</h2>
+                <p><strong>Time:</strong> 10:00 AM</p>
+                <p><strong>Game:</strong> Free Fire</p>
+            </div>
+            <div class="schedule-item">
+                <h2 class="text-lg font-bold">Match 2</h2>
+                <p><strong>Time:</strong> 12:00 PM</p>
+                <p><strong>Game:</strong> Valorant</p>
+            </div>
+            <div class="schedule-item">
+                <h2 class="text-lg font-bold">Match 3</h2>
+                <p><strong>Time:</strong> 3:00 PM</p>
+                <p><strong>Game:</strong> Dota 2</p>
+            </div>
+            <div class="schedule-item" >
+                <h2 class="text-lg font-bold">Match 4</h2>
+                <p><strong>Time:</strong> 5:00 PM</p>
+                <p><strong>Game:</strong> Call of Duty</p>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle" class="text-lg font-bold mb-4"></h2>
+                <p><strong>Time:</strong> <span id="modalTime"></span></p>
+                <p><strong>Game:</strong> <span id="modalGame"></span></p>
+                <!-- Add more details as needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-4">E-sports Tournaments Leaderboard</h1>
+        <!-- Leaderboard Table -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Leaderboard</h2>
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left">Player</th>
+                        <th class="text-left">Game</th>
+                        <th class="text-left">Kills</th>
+                        <th class="text-left">Wins</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Leaderboard rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Points Table -->
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Points Table</h2>
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left">Team</th>
+                        <th class="text-left">Points</th>
+                    </tr>
+                </thead>
+                <tbody id="pointsTableBody">
+                    <!-- Points table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-6 mt-6">
+        <div class="flex items-center justify-center">
+            <p class="text-white text-sm">&copy; 2024 Zedafz. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Left Arrow -->
+    <!-- <div class="arrow left-arrow md:hidden" onclick="scrollLeft()">
+        <i class="fas fa-chevron-left fa-lg"></i>
+    </div> -->
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav md:hidden">
+
+        <a href="#item1"><i class="fas fa-home fa-lg"></i></a>
+        <a href="#item2"><i class="fas fa-search fa-lg"></i></a>
+        <a href="#item3"><i class="fas fa-user fa-lg"></i></a>
+        <a href="#item4"><i class="fas fa-cog fa-lg"></i></a>
+        <!-- Add more items as needed for pagination-like behavior -->
+        <a href="#item5"><i class="fas fa-envelope fa-lg"></i></a>
+        <a href="#item6"><i class="fas fa-bell fa-lg"></i></a>
+        <a href="#item7"><i class="fas fa-camera fa-lg"></i></a>
+        <a href="#item8"><i class="fas fa-music fa-lg"></i></a>
+
+    </div>
+    <!-- Right Arrow -->
+    <!-- <div class="arrow right-arrow md:hidden" onclick="scrollRight()">
+        <i class="fas fa-chevron-right fa-lg"></i>
+    </div> -->
+    <!-- ... -->
+
+
+
+    <script>
+        function scrollLeft() {
+            document.querySelector('.bottom-nav').scrollBy({ left: -100, behavior: 'smooth' });
+        }
+        function scrollRight() {
+            document.querySelector('.bottom-nav').scrollBy({ left: 100, behavior: 'smooth' });
+        }
+
+        function openModal(title, date, time, team, prize, fee, rounds, slots) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-date').innerText = "Date: " + date;
+            document.getElementById('modal-time').innerText = "Time: " + time;
+            document.getElementById('modal-team').innerText = "Team Type: " + team;
+            document.getElementById('modal-prize').innerText = "Prize Pool: " + prize;
+            document.getElementById('modal-fee').innerText = "Entry Fee: " + fee;
+            document.getElementById('modal-rounds').innerText = "Number of Rounds: " + rounds;
+            document.getElementById('modal').classList.remove('hidden');
+
+
+            // Determine team size (squad, duo, solo) and adjust number of UID inputs
+            const teamSize = 4; // Example: Change this dynamically based on user selection
+            const uidInputsContainer = document.getElementById('uid-inputs');
+            uidInputsContainer.innerHTML = ''; // Clear previous inputs
+            for (let i = 1; i <= teamSize; i++) {
+                const uidInput = document.createElement('input');
+                uidInput.type = 'text';
+                uidInput.id = `uid-${i}`;
+                uidInput.placeholder = `UID ${i}`;
+                uidInput.className = 'w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring focus:ring-blue-500 mb-2';
+                uidInputsContainer.appendChild(uidInput);
+            }
+        }
+
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // Dummy data for leaderboard and points table
+        const leaderboardData = [
+            { player: 'Player 1', game: 'Free Fire', kills: 10, wins: 5 },
+            { player: 'Player 2', game: 'Valorant', kills: 8, wins: 3 },
+            { player: 'Player 3', game: 'Dota 2', kills: 15, wins: 7 },
+            // Add more leaderboard data as needed
+        ];
+
+        const pointsTableData = [
+            { team: 'Team A', points: 100 },
+            { team: 'Team B', points: 80 },
+            { team: 'Team C', points: 60 },
+            // Add more points table data as needed
+        ];
+
+        // Function to populate leaderboard table
+        function populateLeaderboardTable() {
+            const leaderboardBody = $('#leaderboardBody');
+            leaderboardBody.empty(); // Clear existing data
+            leaderboardData.forEach(data => {
+                const row = `<tr>
+                                <td>${data.player}</td>
+                                <td>${data.game}</td>
+                                <td>${data.kills}</td>
+                                <td>${data.wins}</td>
+                            </tr>`;
+                leaderboardBody.append(row);
+            });
+        }
+
+        // Function to populate points table
+        function populatePointsTable() {
+            const pointsTableBody = $('#pointsTableBody');
+            pointsTableBody.empty(); // Clear existing data
+            pointsTableData.forEach(data => {
+                const row = `<tr>
+                                <td>${data.team}</td>
+                                <td>${data.points}</td>
+                            </tr>`;
+                pointsTableBody.append(row);
+            });
+        }
+
+        // Populate tables on page load
+        $(document).ready(function () {
+            populateLeaderboardTable();
+            populatePointsTable();
+        });
+
+
+
+    </script>
+</body>
+
+</html>

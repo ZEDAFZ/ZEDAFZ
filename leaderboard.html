@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><title>Zedafz - Leaderboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body class="bg-gray-900 text-gray-100">
+
+    <!-- Header -->
+    <header class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and Brand Name -->
+            <div class="flex items-center">
+                <img src="logo.webp" alt="Zedafz Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold">Zedafz</span>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="/" class="hover:text-blue-500">Home</a>
+                <a href="about.html" class="hover:text-blue-500">About</a>
+                <a href="chat.html" class="hover:text-blue-500">Chat</a>
+                <a href="gallery.html" class="hover:text-blue-500">Gallery</a>
+                <a href="tournaments.html" class="hover:text-blue-500">Tournaments</a>
+                <a href="leaderboard.html" class="hover:text-blue-500">Leaderboard</a>
+                <a href="#" class="hover:text-blue-500">Events</a>
+            </nav>
+
+            <!-- User Profile and Icons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <img src="user.png" alt="User Profile" class="h-8 w-8 rounded-full">
+                <span>Username</span>
+                <button><i class="fas fa-bell"></i></button>
+                <button><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-bold mb-4">Leaderboard</h1>
+        
+
+        <!-- Search Input -->
+        <div class="w-full max-w-md mx-auto mb-4">
+            <div class="relative">
+                <input id="searchInput" type="text" class="input input-bordered w-full pr-10" placeholder="Search by player name...">
+                <button class="absolute inset-y-0 right-0 mt-1 mr-2">
+                    <i class="text-gray-400 fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filtering Options -->
+        <div class="flex justify-center mb-4 space-x-4">
+            <button id="filterAll" class="btn btn-sm btn-primary">All</button>
+            <button id="filterFreeFire" class="btn btn-sm btn-primary">Free Fire</button>
+            <button id="filterEFootball" class="btn btn-sm btn-primary">eFootball</button>
+            <button id="filterValorant" class="btn btn-sm btn-primary">Valorant</button>
+        </div>
+
+        <!-- Scoreboard Section -->
+        <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-2">MVP'S</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <!-- Scoreboard Item -->
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <h3 class="text-lg font-bold mb-2">ABC Player | Free Fire</h3>
+                    <p class="text-gray-300">Wins: 20</p>
+                    <p class="text-gray-300">Kills: 100</p>
+                </div>
+                <!-- Scoreboard Item -->
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <h3 class="text-lg font-bold mb-2">EFG Player | eFootball</h3>
+                    <p class="text-gray-300">Goals: 30</p>
+                    <p class="text-gray-300">Assists: 15</p>
+                </div>
+                <!-- Scoreboard Item -->
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <h3 class="text-lg font-bold mb-2">HIJ Player | Valorant</h3>
+                    <p class="text-gray-300">Wins: 15</p>
+                    <p class="text-gray-300">Kills: 80</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="overflow-x-auto mt-8">
+            <table class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Rank</th>
+                        <th class="px-4 py-2">Player</th>
+                        <th class="px-4 py-2">Wins</th>
+                        <th class="px-4 py-2">Kills / Goals</th>
+                        <th class="px-4 py-2">Score</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody" class="align-top">
+                    <!-- Leaderboard rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-6 mt-6">
+        <div class="flex items-center justify-center">
+            <p class="text-white text-sm">&copy; 2024 Zedafz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for scrolling navigation -->
+    <script>
+        $(document).ready(function () {
+            // Smooth scroll for bottom navigation
+            $('.bottom-nav a').on('click', function (e) {
+                if (this.hash !== '') {
+                    e.preventDefault();
+
+                    const hash = this.hash;
+
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800);
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            // Simulated user data (replace this with actual data fetching)
+            const users = [
+                { rank: 1, name: 'User 1', wins: 10, kills: 50, score: 200, game: 'Free Fire' },
+                { rank: 2, name: 'User 2', wins: 8, kills: 45, score: 180, game: 'eFootball' },
+                { rank: 3, name: 'User 3', wins: 7, kills: 40, score: 160, game: 'Valorant' },
+                { rank: 4, name: 'User 4', wins: 6, kills: 35, score: 140, game: 'Free Fire' },
+                { rank: 5, name: 'User 5', wins: 5, kills: 30, score: 120, game: 'eFootball' },
+            ];
+
+            // Function to populate leaderboard table with user data
+            function populateLeaderboard(users) {
+                const leaderboardBody = $('#leaderboardBody');
+                leaderboardBody.empty(); // Clear existing rows
+
+                // Loop through users and create table rows
+                users.forEach(user => {
+                    const row = `<tr>
+                        <td class="px-4 py-2 text-center">${user.rank}</td>
+                        <td class="px-4 py-2 text-center">${user.name}</td>
+                        <td class="px-4 py-2 text-center">${user.wins}</td>
+                        <td class="px-4 py-2 text-center">${user.kills}</td>
+                        <td class="px-4 py-2 text-center">${user.score}</td>
+                    </tr>`;
+                    leaderboardBody.append(row); // Append row to table body
+                });
+            }
+
+            // Initial population of leaderboard with all users
+            populateLeaderboard(users);
+
+            // Filter leaderboard when a filter button is clicked
+            $('#filterAll').click(function () {
+                populateLeaderboard(users);
+            });
+
+            $('#filterFreeFire').click(function () {
+                const filteredUsers = users.filter(user => user.game === 'Free Fire');
+                populateLeaderboard(filteredUsers);
+            });
+
+            $('#filterEFootball').click(function () {
+                const filteredUsers = users.filter(user => user.game === 'eFootball');
+                populateLeaderboard(filteredUsers);
+            });
+
+            $('#filterValorant').click(function () {
+                const filteredUsers = users.filter(user => user.game === 'Valorant');
+                populateLeaderboard(filteredUsers);
+            });
+
+            // Search functionality
+        $('#searchInput').on('input', function () {
+                const searchTerm = $(this).val().toLowerCase();
+                const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm));
+                populateLeaderboard(filteredUsers);
+            });
+
+
+        });
+
+        
+    </script>
+</body>
+
+</html>

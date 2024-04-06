@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zedafz - Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <style>
+        /* Bottom navigation bar styling */
+        .bottom-nav {
+            display: flex;
+            overflow-x: scroll;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1F2937;
+            /* This hex color matches Tailwind's bg-gray-800 */
+            z-index: 10;
+            white-space: nowrap;
+            padding: 10px 50px;
+            scroll-behavior: smooth;
+        }
+
+        .bottom-nav::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for iOS and Chrome */
+        }
+
+        .bottom-nav a {
+            flex: none;
+            display: inline-block;
+            text-align: center;
+            padding: 16px;
+            /* Increased padding */
+            text-decoration: none;
+            color: white;
+        }
+
+        .bottom-nav i {
+            font-size: 24px;
+            /* Larger icon size */
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            bottom: 0;
+            transform: translateY(-50%);
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            border-radius: 50%;
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        /* Show the navigation bar only on small screens */
+        @media screen and (min-width: 640px) {
+
+            .bottom-nav,
+            .arrow {
+                display: none;
+            }
+        }
+
+        /* Social sharing buttons */
+        .social-sharing button {
+            background-color: #1F2937;
+            /* Adjust the background color */
+            color: #ffffff;
+            /* Adjust the text color */
+            border-color: transparent;
+            /* Remove border */
+        }
+
+        .social-sharing button:hover {
+            background-color: #111827;
+            /* Adjust hover background color */
+        }
+
+        .social-sharing button:focus {
+            outline: none;
+            /* Remove outline */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100">
+
+    <!-- Header -->
+    <header class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and Brand Name -->
+            <div class="flex items-center">
+                <img src="logo.webp" alt="Zedafz Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold">Zedafz</span>
+            </div>
+
+
+
+            <!-- Navigation Menu -->
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="/" class="hover:text-blue-500">Home</a>
+                <a href="about.html" class="hover:text-blue-500">About</a>
+                <a href="chat.html" class="hover:text-blue-500">Chat</a>
+                <a href="gallery.html" class="hover:text-blue-500">Gallery</a>
+                <a href="tournaments.html" class="hover:text-blue-500">Tournaments</a>
+                <a href="leaderboard.html" class="hover:text-blue-500">Leaderboard</a>
+                <a href="events.html" class="hover:text-blue-500">Events</a>
+                <a href="404.html" class="hover:text-blue-500">404</a>
+            </nav>
+
+            <!-- User Profile and Icons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="profile.html" class="flex items-center space-x-4">
+                    <img src="user.png" alt="User Profile" class="h-8 w-8 rounded-full">
+                    <span>Username</span>
+                </a>
+                <button><i class="fas fa-bell"></i></button>
+                <button><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+
+        </div>
+    </header>
+
+    
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-8">
+        <!-- Search Bar -->
+        <div class="flex items-center my-8 justify-center mt-8">
+            <div class="relative">
+                <input type="text" placeholder="Search events..." class="input input-bordered w-80 sm:w-auto" />
+                <button
+                    class="absolute inset-y-0 right-0 px-3 flex items-center justify-center bg-primary text-white rounded-r-md">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Options -->
+        <div class="flex items-center justify-center mt-8 mb-8 space-x-4">
+            <!-- Dropdown for Date -->
+            <div class="dropdown dropdown-bottom">
+                <div tabindex="0" role="button" class="btn btn-primary">Date</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a>Today</a></li>
+                    <li><a>This Week</a></li>
+                    <li><a>This Month</a></li>
+                </ul>
+            </div>
+
+            <!-- Dropdown for Category -->
+            <div class="dropdown dropdown-bottom">
+                <div tabindex="0" role="button" class="btn btn-primary">Category</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a>Sports</a></li>
+                    <li><a>Music</a></li>
+                    <li><a>Art</a></li>
+                    <!-- Add more categories as needed -->
+                </ul>
+            </div>
+
+            <!-- Dropdown for Location -->
+            <div class="dropdown dropdown-bottom">
+                <div tabindex="0" role="button" class="btn btn-primary">Location</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a>New York</a></li>
+                    <li><a>Los Angeles</a></li>
+                    <li><a>London</a></li>
+                    <!-- Add more locations as needed -->
+                </ul>
+            </div>
+        </div>
+
+    
+
+
+
+        <!-- Event Cards Section -->
+        <section id="eventsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Sample Event Card (Repeat for each event) -->
+            <div class="rounded-lg p-6 card w-96 bg-base-100 shadow-xl">
+                <figure>
+                    <img src="introduction-bg.webp" alt="Event 1" class="rounded-t-lg">
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title text-xl font-semibold mb-2">Event Title 1</h2>
+                    <p class="text-gray-600 mb-2">Date: <span class="font-semibold">March 15, 2024</span></p>
+                    <p class="text-gray-600 mb-2">Time: <span class="font-semibold">10:00 AM - 4:00 PM</span></p>
+                    <p class="text-gray-600 mb-2">Location: <span class="font-semibold">Event Venue 1</span></p>
+                    <p class="text-gray-600 mb-2">Description: <span class="font-semibold">Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.</span></p>
+                    <!-- Add any additional event details here -->
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary" onclick="eventDetailsModal.showModal()">View Details</button>
+                        <!-- Social sharing buttons -->
+                        <div class="social-sharing flex justify-end space-x-4 mt-4">
+                            <button class="btn btn-primary">
+                                <i class="fab fa-facebook-f"></i> Share
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fab fa-twitter"></i> Tweet
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fab fa-whatsapp"></i> Share
+                            </button>
+                            <!-- Add more social sharing buttons as needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Event Card 2 -->
+            <div class="rounded-lg p-6 card w-96 bg-base-100 shadow-xl">
+                <figure>
+                    <img src="about-bg.webp" alt="Event 2" class="rounded-t-lg">
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title text-xl font-semibold mb-2">Event Title 2</h2>
+                    <p class="text-gray-600 mb-2">Date: <span class="font-semibold">April 20, 2024</span></p>
+                    <p class="text-gray-600 mb-2">Time: <span class="font-semibold">2:00 PM - 7:00 PM</span></p>
+                    <p class="text-gray-600 mb-2">Location: <span class="font-semibold">Event Venue 2</span></p>
+                    <p class="text-gray-600 mb-2">Description: <span class="font-semibold">Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.</span></p>
+                    <!-- Add any additional event details here -->
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary" onclick="eventDetailsModal.showModal()">View Details</button>
+                        <!-- Social sharing buttons -->
+                        <div class="social-sharing flex justify-end space-x-4 mt-4">
+                            <button class="btn btn-primary">
+                                <i class="fab fa-facebook-f"></i> Share
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fab fa-twitter"></i> Tweet
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fab fa-whatsapp"></i> Share
+                            </button>
+                            <!-- Add more social sharing buttons as needed -->
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Events Container -->
+
+
+
+            <!-- Add more event cards as needed -->
+        </section>
+
+
+        <!-- Event Details Modal -->
+        <dialog id="eventDetailsModal" class="modal">
+            <div class="modal-box">
+                <div class="card bg-base-100 p-8">
+                    <h2 class="text-2xl font-semibold mb-4">Event Title</h2>
+                    <p class="text-gray-600 mb-2">Date: <span class="font-semibold">January 1, 2025</span></p>
+                    <p class="text-gray-600 mb-2">Time: <span class="font-semibold">10:00 AM - 5:00 PM</span></p>
+                    <p class="text-gray-600 mb-2">Location: <span class="font-semibold">Venue Name</span></p>
+                    <p class="text-gray-600 mb-2">Description: <span class="font-semibold">Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.</span></p>
+                    <!-- Add any additional event details here -->
+                    <div class="flex justify-end mt-4">
+                        <form action="" method="dialog"><button id="closeModalBtn"
+                                class="btn btn-primary">Close</button></form>
+
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
+        <div class="max-w-lg mt-8 mx-auto bg-base-100 p-6 rounded-lg shadow-xl">
+            <h2 class="text-2xl font-semibold mb-4">Event Registration</h2>
+            <form id="eventRegistrationForm">
+                <div class="mb-4">
+                    <label for="eventName" class="block text-sm font-medium text-gray-400">Event Name</label>
+                    <input type="text" id="eventName" name="eventName"
+                        class="form-input mt-1 block w-full bg-base-200 border border-gray-400 rounded-md py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter event name" required>
+                </div>
+                <div class="mb-4">
+                    <label for="eventDate" class="block text-sm font-medium text-gray-400">Event Date</label>
+                    <input type="text" id="eventDate" name="eventDate"
+                        class="form-input mt-1 block w-full bg-base-200 border border-gray-400 rounded-md py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Select event date" required>
+                </div>
+                <div class="mb-4">
+                    <label for="eventTime" class="block text-sm font-medium text-gray-400">Event Time</label>
+                    <input type="text" id="eventTime" name="eventTime"
+                        class="form-input mt-1 block w-full bg-base-200 border border-gray-400 rounded-md py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Select event time" required>
+                </div>
+                <div class="mb-4">
+                    <label for="eventLocation" class="block text-sm font-medium text-gray-400">Event Location</label>
+                    <input type="text" id="eventLocation" name="eventLocation"
+                        class="form-input mt-1 block w-full bg-base-200 border border-gray-400 rounded-md py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter event location" required>
+                </div>
+                <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-gray-400">Upload Image</label>
+                    <input type="file" id="image" name="image" accept="image/*"
+                        class="form-input mt-1 block w-full bg-base-200 border border-gray-400 rounded-md py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="eventDescription" class="block text-sm font-medium text-gray-400">Event
+                        Description</label>
+                    <textarea id="eventDescription" name="eventDescription" rows="3"
+                        class="form-textarea mt-1 block w-full bg-base-200 border border-gray-400 rounded-md py-2 px-4 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter event description" required></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+
+
+
+    </main>
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-6 mt-6">
+        <div class="flex items-center justify-center">
+            <p class="text-white text-sm">&copy; 2024 Zedafz. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+
+    <script>
+        function scrollLeft() {
+            document.querySelector('.bottom-nav').scrollBy({ left: -100, behavior: 'smooth' });
+        }
+        function scrollRight() {
+            document.querySelector('.bottom-nav').scrollBy({ left: 100, behavior: 'smooth' });
+        }
+
+
+        $(document).ready(function () {
+            $('#eventRegistrationForm').submit(function (e) {
+                e.preventDefault();
+                // Get form data
+                var formData = new FormData(this);
+                // Create event card HTML
+                var eventCardHtml = '<div class="rounded-lg p-6 card w-96 bg-base-100 shadow-xl">';
+                eventCardHtml += '<figure><img src="' + getImageUrl(formData.get('image')) + '" alt="' + formData.get('eventName') + '" class="rounded-t-lg"></figure>';
+                eventCardHtml += '<div class="card-body">';
+                eventCardHtml += '<h2 class="card-title text-xl font-semibold mb-2">' + formData.get('eventName') + '</h2>';
+                eventCardHtml += '<div class="card-info">';
+                eventCardHtml += '<p class="text-gray-600 mb-2">Date: <span class="font-semibold">' + formData.get('eventDate') + '</span></p>';
+                eventCardHtml += '<p class="text-gray-600 mb-2">Time: <span class="font-semibold">' + formData.get('eventTime') + '</span></p>';
+                eventCardHtml += '<p class="text-gray-600 mb-2">Location: <span class="font-semibold">' + formData.get('eventLocation') + '</span></p>';
+                eventCardHtml += '<p class="text-gray-600 mb-2">Description: <span class="font-semibold">' + formData.get('eventDescription') + '</span></p>';
+                eventCardHtml += '</div>';
+                eventCardHtml += '<div class="card-actions">';
+                eventCardHtml += '<button class="btn btn-primary" onclick="eventDetailsModal.showModal()">View Details</button>';
+                eventCardHtml += '</div>';
+                eventCardHtml += '</div>';
+                eventCardHtml += '</div>';
+                // Append event card to events container
+                $('#eventsContainer').append(eventCardHtml);
+                // Clear form fields
+                $(this)[0].reset();
+            });
+        });
+
+        // Function to get image URL
+        function getImageUrl(file) {
+            var imageUrl = '';
+            if (file) {
+                imageUrl = URL.createObjectURL(file);
+            } else {
+                // Default image URL if no image selected
+                imageUrl = 'introduction-bg.webp';
+            }
+            return imageUrl;
+        }
+
+
+        flatpickr("#eventDate", {
+            enableTime: false,
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
+
+        flatpickr("#eventTime", {
+            enableTime: true,
+            noCalendar: true,
+            altInput: true,
+            altFormat: "h:i K",
+            dateFormat: "H:i",
+            time_24hr: false,
+        });
+
+
+    </script>
+</body>
+
+</html>

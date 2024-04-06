@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zedafz</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Bottom navigation bar styling */
+        .bottom-nav {
+            display: flex;
+            overflow-x: scroll;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1F2937;
+            /* This hex color matches Tailwind's bg-gray-800 */
+            z-index: 10;
+            white-space: nowrap;
+            padding: 10px 50px;
+            scroll-behavior: smooth;
+        }
+
+        .bottom-nav::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for iOS and Chrome */
+        }
+
+        .bottom-nav a {
+            flex: none;
+            display: inline-block;
+            text-align: center;
+            padding: 16px;
+            /* Increased padding */
+            text-decoration: none;
+            color: white;
+        }
+
+        .bottom-nav i {
+            font-size: 24px;
+            /* Larger icon size */
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            bottom: 0;
+            transform: translateY(-50%);
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            border-radius: 50%;
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        /* Show the navigation bar only on small screens */
+        @media screen and (min-width: 640px) {
+
+            .bottom-nav,
+            .arrow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100">
+
+    <!-- Header -->
+    <header class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and Brand Name -->
+            <div class="flex items-center">
+                <img src="logo.webp" alt="Zedafz Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold">Zedafz</span>
+            </div>
+
+
+
+            <!-- Navigation Menu -->
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="/" class="hover:text-blue-500">Home</a>
+                <a href="about.html" class="hover:text-blue-500">About</a>
+                <a href="chat.html" class="hover:text-blue-500">Chat</a>
+                <a href="gallery.html" class="hover:text-blue-500">Gallery</a>
+                <a href="tournaments.html" class="hover:text-blue-500">Tournaments</a>
+                <a href="leaderboard.html" class="hover:text-blue-500">Leaderboard</a>
+                <a href="#" class="hover:text-blue-500">Events</a>
+            </nav>
+
+            <!-- User Profile and Icons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="profile.html" class="flex items-center space-x-4">
+                    <img src="user.png" alt="User Profile" class="h-8 w-8 rounded-full">
+                    <span>Username</span>
+                </a>
+                <button><i class="fas fa-bell"></i></button>
+                <button><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+
+        </div>
+    </header>
+
+
+     <!-- Error Message Section -->
+     <div class="container mx-auto h-screen flex flex-col justify-center items-center">
+        <h1 class="text-6xl font-bold mb-4">404</h1>
+        <p class="text-lg mb-8">Page Not Found</p>
+        <p class="text-sm mb-8">The page you are looking for might have been removed or does not exist.</p>
+        <!-- Redirect Links -->
+        <div class="flex space-x-4">
+            <a href="/" class="btn btn-primary"><i class="fas fa-home mr-2"></i>Go to Home</a>
+            <a href="contact.html" class="btn btn-secondary"><i class="fas fa-envelope mr-2"></i>Contact Support</a>
+        </div>
+    </div>
+
+
+    <!-- Left Arrow -->
+    <div class="arrow left-arrow md:hidden" onclick="scrollLeft()">
+        <i class="fas fa-chevron-left fa-lg"></i>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav md:hidden">
+
+        <a href="#item1"><i class="fas fa-home fa-lg"></i></a>
+        <a href="#item2"><i class="fas fa-search fa-lg"></i></a>
+        <a href="#item3"><i class="fas fa-user fa-lg"></i></a>
+        <a href="#item4"><i class="fas fa-cog fa-lg"></i></a>
+        <!-- Add more items as needed for pagination-like behavior -->
+        <a href="#item5"><i class="fas fa-envelope fa-lg"></i></a>
+        <a href="#item6"><i class="fas fa-bell fa-lg"></i></a>
+        <a href="#item7"><i class="fas fa-camera fa-lg"></i></a>
+        <a href="#item8"><i class="fas fa-music fa-lg"></i></a>
+
+    </div>
+    <!-- Right Arrow -->
+    <div class="arrow right-arrow md:hidden" onclick="scrollRight()">
+        <i class="fas fa-chevron-right fa-lg"></i>
+    </div>
+    <!-- ... -->
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-6 mt-6">
+        <div class="flex items-center justify-center">
+            <p class="text-white text-sm">&copy; 2024 Zedafz. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+
+    <script>
+        function scrollLeft() {
+            document.querySelector('.bottom-nav').scrollBy({ left: -100, behavior: 'smooth' });
+        }
+        function scrollRight() {
+            document.querySelector('.bottom-nav').scrollBy({ left: 100, behavior: 'smooth' });
+        }
+
+
+
+    </script>
+</body>
+
+</html>

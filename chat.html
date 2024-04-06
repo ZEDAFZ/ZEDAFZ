@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zedafz - chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Bottom navigation bar styling */
+        .bottom-nav {
+            display: flex;
+            overflow-x: scroll;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1F2937;
+            /* This hex color matches Tailwind's bg-gray-800 */
+            z-index: 10;
+            white-space: nowrap;
+            padding: 10px 50px;
+            scroll-behavior: smooth;
+        }
+
+        .bottom-nav::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for iOS and Chrome */
+        }
+
+        .bottom-nav a {
+            flex: none;
+            display: inline-block;
+            text-align: center;
+            padding: 16px;
+            /* Increased padding */
+            text-decoration: none;
+            color: white;
+        }
+
+        .bottom-nav i {
+            font-size: 24px;
+            /* Larger icon size */
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            bottom: 0;
+            transform: translateY(-50%);
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            border-radius: 50%;
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        /* Show the navigation bar only on small screens */
+        @media screen and (min-width: 640px) {
+
+            .bottom-nav,
+            .arrow {
+                display: none;
+            }
+        }
+
+        /* WebKit Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            /* Width of the scrollbar */
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            /* Track color */
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #6B7280;
+            /* Handle color */
+            border-radius: 4px;
+            /* Rounded corners */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4B5563;
+            /* Handle color on hover */
+        }
+
+        /* Voice Chat Section */
+        .voice-chat-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .local-audio {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .remote-audios {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .remote-audios audio {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            margin: 0 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+        }
+
+        .voice-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: green;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100">
+
+    <!-- Header -->
+    <header class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and Brand Name -->
+            <div class="flex items-center">
+                <img src="logo.webp" alt="Zedafz Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold">Zedafz</span>
+            </div>
+
+
+
+            <!-- Navigation Menu -->
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="/" class="hover:text-blue-500">Home</a>
+                <a href="#" class="hover:text-blue-500">About</a>
+                <a href="#" class="hover:text-blue-500">Chat</a>
+                <a href="#" class="hover:text-blue-500">Gallery</a>
+                <a href="#" class="hover:text-blue-500">Tournaments</a>
+                <a href="#" class="hover:text-blue-500">Leaderboard</a>
+                <a href="#" class="hover:text-blue-500">Events</a>
+            </nav>
+
+            <!-- User Profile and Icons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <img src="user.png" alt="User Profile" class="h-8 w-8 rounded-full">
+                <span>Username</span>
+                <button><i class="fas fa-bell"></i></button>
+                <button><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </header>
+    <!-- Left Arrow -->
+    <div class="arrow left-arrow md:hidden" onclick="scrollLeft()">
+        <i class="fas fa-chevron-left fa-lg"></i>
+    </div>
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav md:hidden">
+
+        <a href="#item1"><i class="fas fa-home fa-lg"></i></a>
+        <a href="#item2"><i class="fas fa-search fa-lg"></i></a>
+        <a href="#item3"><i class="fas fa-user fa-lg"></i></a>
+        <a href="#item4"><i class="fas fa-cog fa-lg"></i></a>
+        <!-- Add more items as needed for pagination-like behavior -->
+        <a href="#item5"><i class="fas fa-envelope fa-lg"></i></a>
+        <a href="#item6"><i class="fas fa-bell fa-lg"></i></a>
+        <a href="#item7"><i class="fas fa-camera fa-lg"></i></a>
+        <a href="#item8"><i class="fas fa-music fa-lg"></i></a>
+
+    </div>
+    <!-- Right Arrow -->
+    <div class="arrow right-arrow md:hidden" onclick="scrollRight()">
+        <i class="fas fa-chevron-right fa-lg"></i>
+    </div>
+    <!-- ... -->
+    <!-- Chat Section -->
+    <section class="container mx-auto mt-8">
+        <h2 class="text-2xl font-bold mb-4">Chat</h2>
+        <div class="bg-200 rounded-lg shadow-md p-">
+            <!-- Chat messages container -->
+            <div id="chatMessages"
+                class="overflow-y-auto h-64 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+                <!-- Chat messages will be displayed here -->
+                <!-- Dummy data for demonstration -->
+                <div class="chat-date text-center mb-4">Today</div>
+                <div class="chat flex items-start mb-4 justify-end">
+                    <div class="chat-content text-right">
+                        <div class="chat-header flex justify-between items-center">
+                            <span class="text-sm font-semibold">You</span>
+                            <time class="text-xs opacity-50">12:45 PM</time>
+                        </div>
+                        <div class="chat-bubble bg-blue-500 text-white p-2 rounded-lg max-w-xs md:max-w-md lg:max-w-lg">
+                            You were the Chosen One! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </div>
+                    </div>
+                    <div class="chat-image avatar ml-2">
+                        <div class="w-10 rounded-full">
+                            <img alt="User Avatar" src="user.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="chat flex items-start mb-4">
+                    <div class="chat-image avatar mr-2">
+                        <div class="w-10 rounded-full">
+                            <img alt="Other User Avatar" src="user.png">
+                        </div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header flex justify-between items-center">
+                            <span class="text-sm font-semibold">Other User</span>
+                            <time class="text-xs opacity-50">12:46 PM</time>
+                        </div>
+                        <div class="chat-bubble bg-gray-300 p-2 rounded-lg max-w-xs md:max-w-md lg:max-w-lg">
+                            I hate you!
+                        </div>
+                    </div>
+                </div>
+                <!-- Separate messages by date -->
+                <div class="chat-date text-center mb-4">Yesterday</div>
+                <!-- Add more messages as needed -->
+            </div>
+            <!-- Chat input area -->
+            <div class="mt-4 flex items-center">
+                <input id="messageInput" type="text" placeholder="Type your message..."
+                    class="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500">
+                <button id="sendMessageButton" class="btn btn-primary ml-2">Send</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voice Channel Interface -->
+    <div class="container mx-auto mt-8">
+        <h2 class="text-2xl font-bold mb-4">Voice Channels</h2>
+        <div class="bg-transparent rounded-lg shadow-md p-4"> <!-- Changed bg-gray-200 to transparent -->
+            <!-- Voice Channels List -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- General Voice Channel Card -->
+                <div id="generalChannel" class="card bg-gray-800 text-white">
+                    <div class="card-body">
+                        <h3 class="card-title">General</h3>
+                        <p class="text-sm">Join the general voice channel to chat with everyone.</p>
+                        <div class="flex justify-between items-center mt-4">
+                            <button class="btn btn-primary" onclick="joinChannel('general')">Join</button>
+                            <span id="generalMemberCount" class="text-xs">5 members</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Private Voice Channel Card -->
+                <div id="privateChannel" class="card bg-gray-800 text-white">
+                    <div class="card-body">
+                        <h3 class="card-title">Private Channel 1</h3>
+                        <p class="text-sm">Join the private voice channel to chat with selected members.</p>
+                        <div class="flex justify-between items-center mt-4">
+                            <button class="btn btn-primary" onclick="joinChannel('private')">Join</button>
+                            <span id="privateMemberCount" class="text-xs">3 members</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more voice channel cards as needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Chat Section -->
+<section class="container mx-auto mt-8">
+    <h2 class="text-2xl font-bold mb-4">Voice Chat</h2>
+    <div class="bg-transparent rounded-lg shadow-md p-4">
+        <!-- Local audio stream -->
+        <audio id="localAudio" class="hidden" autoplay></audio>
+        <!-- Remote audio streams -->
+        <div id="remoteAudios" class="grid grid-cols-2 gap-4"></div>
+        <!-- Controls -->
+        <div class="controls flex items-center space-x-4 mt-4">
+            <!-- Join channel button -->
+            <button id="joinChannelButton" class="btn btn-primary" onclick="joinChannel()">Join Channel</button>
+            <!-- Mute/Unmute button -->
+            <button id="toggleMuteButton" class="btn btn-primary" onclick="toggleMute()">
+                <i id="micIcon" class="fas fa-microphone"></i> <!-- Initially shows microphone icon -->
+                <span id="muteText">Mute</span> <!-- Initially shows "Mute" text -->
+            </button>
+            <!-- Leave channel button -->
+            <button id="leaveChannelButton" class="btn btn-danger hidden" onclick="leaveChannel()">Leave Channel</button>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-6 mt-6">
+        <div class="flex items-center justify-center">
+            <p class="text-white text-sm">&copy; 2024 Zedafz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function scrollLeft() {
+            document.querySelector('.bottom-nav').scrollBy({ left: -100, behavior: 'smooth' });
+        }
+        function scrollRight() {
+            document.querySelector('.bottom-nav').scrollBy({ left: 100, behavior: 'smooth' });
+        }
+
+        // Dummy data for demonstration
+        const messages = [
+            { user: 'You', message: 'You were the Chosen One!', time: '12:45 PM', date: 'Today' },
+            { user: 'Other User', message: 'I hate you!', time: '12:46 PM', date: 'Today' },
+            // Add more messages as needed
+        ];
+
+        // Function to display messages
+        function displayMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = ''; // Clear previous messages
+            let currentDate = '';
+            messages.forEach(msg => {
+                // Check if the message date is different from the current date
+                if (msg.date !== currentDate) {
+                    // Add a date separator
+                    const dateElement = document.createElement('div');
+                    dateElement.classList.add('chat-date', 'text-center', 'mb-4');
+                    dateElement.textContent = msg.date;
+                    chatMessages.appendChild(dateElement);
+                    currentDate = msg.date;
+                }
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat', 'flex', 'items-start', 'mb-4');
+                if (msg.user === 'You') {
+                    messageElement.classList.add('justify-end');
+                    messageElement.innerHTML = `
+                    <div class="chat-content text-right">
+                        <div class="chat-header flex justify-between items-center">
+                            <span class="text-sm font-semibold">${msg.user}</span>
+                            <time class="text-xs opacity-50">${msg.time}</time>
+                        </div>
+                        <div class="chat-bubble bg-blue-500 text-white p-2 rounded-lg">
+                            ${msg.message}
+                        </div>
+                    </div>
+                    <div class="chat-image avatar ml-2">
+                        <div class="w-10 rounded-full">
+                            <img alt="User Avatar" src="user.png">
+                        </div>
+                    </div>
+                `;
+                } else {
+                    messageElement.innerHTML = `
+                    <div class="chat-image avatar mr-2">
+                        <div class="w-10 rounded-full">
+                            <img alt="Other User Avatar" src="user.png">
+                        </div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header flex justify-between items-center">
+                            <span class="text-sm font-semibold">${msg.user}</span>
+                            <time class="text-xs opacity-50">${msg.time}</time>
+                        </div>
+                        <div class="chat-bubble bg-300 p-2 rounded-lg">
+                            ${msg.message}
+                        </div>
+                    </div>
+                `;
+                }
+                chatMessages.appendChild(messageElement);
+            });
+            // Scroll to bottom of chat messages
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Display initial messages
+        displayMessages();
+
+        // jQuery click event handler for sending messages
+        $('#sendMessageButton').click(function () {
+            const messageInput = $('#messageInput');
+            const message = messageInput.val().trim();
+            if (message !== '') {
+                // Add the new message to the messages array with current time and date
+                const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                const date = new Date().toLocaleDateString('en-US');
+                messages.push({ user: 'You', message, time, date });
+                // Clear the message input field
+                messageInput.val('');
+                // Display updated messages
+                displayMessages();
+            }
+        });
+
+        // Function to join voice channel
+        function joinChannel(channelName) {
+            console.log(channelName);
+            // Simulate joining the channel and updating member count
+            let memberCount = 0; // Placeholder for member count
+            if (channelName === 'general') {
+                memberCount = 5;
+                // Get member count for general channel
+                // Add logic to actually join the general channel
+            } else if (channelName === 'private') {
+                memberCount = 3; // Get member count for private channel
+                // Add logic to actually join the private channel
+            }
+
+            // Show modal
+            showModal();
+
+            // Update member count on the respective channel card
+            if (channelName === 'general') {
+                memberCount = memberCount + 1
+                document.getElementById('generalMemberCount').textContent = memberCount + ' members';
+            } else if (channelName === 'private') {
+                memberCount = memberCount + 1
+                document.getElementById('privateMemberCount').textContent = memberCount + ' members';
+            }
+        }
+
+        let localStream; // Local audio stream
+    let remoteStreams = []; // Remote audio streams
+
+    // Function to join channel
+    function joinChannel() {
+        // Add logic to connect to voice server and get audio stream
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                localStream = stream;
+                const localAudio = document.getElementById('localAudio');
+                localAudio.srcObject = stream;
+                localAudio.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error accessing microphone:', error);
+            });
+
+        // Simulate remote audio streams (can be replaced with actual implementation)
+        const numRemoteStreams = Math.floor(Math.random() * 5) + 1; // Generate random number of remote streams
+        const remoteAudios = document.getElementById('remoteAudios');
+        for (let i = 0; i < numRemoteStreams; i++) {
+            const remoteStream = new MediaStream(); // Dummy remote stream
+            const remoteAudio = document.createElement('audio');
+            remoteAudio.srcObject = remoteStream;
+            remoteAudio.autoplay = true;
+            const remoteAudioContainer = document.createElement('div');
+            remoteAudioContainer.classList.add('relative');
+            remoteAudioContainer.innerHTML = `
+                <div class="flex items-center">
+                    <div class="avatar mr-2">
+                        <img src="user.png" alt="User Avatar">
+                        <div class="voice-indicator"></div>
+                    </div>
+                    <span>User ${i + 1}</span>
+                </div>
+            `;
+            remoteAudioContainer.appendChild(remoteAudio);
+            remoteAudios.appendChild(remoteAudioContainer);
+            remoteStreams.push(remoteStream);
+        }
+
+        // Hide join channel button and show leave channel button
+        $('#joinChannelButton').addClass('hidden');
+        $('#leaveChannelButton').removeClass('hidden');
+    }
+
+    // Function to toggle microphone mute/unmute
+    function toggleMute() {
+        const tracks = localStream.getAudioTracks();
+        if (tracks.length === 0) return; // No audio tracks available
+
+        const track = tracks[0];
+        track.enabled = !track.enabled; // Toggle mute
+
+        // Update button icon and text
+        const micIcon = document.getElementById('micIcon');
+        const muteText = document.getElementById('muteText');
+        if (track.enabled) {
+            micIcon.classList.remove('fa-microphone-slash');
+            micIcon.classList.add('fa-microphone');
+            muteText.textContent = 'Mute';
+        } else {
+            micIcon.classList.remove('fa-microphone');
+            micIcon.classList.add('fa-microphone-slash');
+            muteText.textContent = 'Unmute';
+        }
+    }
+
+    // Function to leave channel
+    function leaveChannel() {
+        // Stop local audio stream
+        if (localStream) {
+            localStream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+        // Stop remote audio streams
+        remoteStreams.forEach(stream => {
+            stream.getTracks().forEach(track => {
+                track.stop();
+            });
+        });
+
+        // Clear remote audio streams array
+        remoteStreams = [];
+
+        // Show join channel button and hide leave channel button
+        $('#leaveChannelButton').addClass('hidden');
+        $('#joinChannelButton').removeClass('hidden');
+
+        // Clear remote audios
+        $('#remoteAudios').empty();
+    }
+
+    </script>
+</body>
+
+</html>
